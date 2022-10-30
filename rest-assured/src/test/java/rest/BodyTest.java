@@ -11,11 +11,11 @@ public class BodyTest {
     @Test
     public void devoValidarRespostaBody() {
         given()
-                .when()
-                .get("http://restapi.wcaquino.me/ola")
-                .then()
-                .statusCode(200)
-                .body(Matchers.is("Ola Mundo!"));
+        .when()
+            .get("http://restapi.wcaquino.me/ola")
+            .then()
+            .statusCode(200)
+            .body(Matchers.is("Ola Mundo!"));
     }
 
     @Test
