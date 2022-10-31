@@ -1,5 +1,6 @@
 package rest;
 
+import classe.User;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -128,6 +129,24 @@ public class VerbosHTTPTest {
 //            .body("name", is("Lucas Foi Alterado"))
 //            .body("age", is(21));
 //    }
+
+    @Test
+    public void deveSalvarUsuarioUsandoMapObjeto() {
+        User user = new User("Usuário via objeto", 20);
+
+        given()
+                .log().all()
+                .contentType("application/json")
+                .body(user)
+                .when()
+                .post(urlPath)
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("id", is(notNullValue()))
+                .body("name", is("Usuário via objeto"))
+                .body("age", is(20));
+    }
 
     @Test
     public void deveRemoverUmUsuario()  {
