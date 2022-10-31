@@ -1,11 +1,12 @@
 package rest;
 
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -15,17 +16,37 @@ public class XmlTest {
     static String urlPath;
     String recurso = "user";
 
+    public RequestSpecification requestSpecification;
+    public ResponseSpecification responseSpecification;
+
+
     @Before
     public void setUp() {
         urlPath = "https://restapi.wcaquino.me/usersXML";
+
+        RequestSpecBuilder reqBuilder = new RequestSpecBuilder();
+        reqBuilder.log(LogDetail.ALL);
+        requestSpecification = reqBuilder.build();
+
+        ResponseSpecBuilder resBuilder = new ResponseSpecBuilder();
+        resBuilder.expectStatusCode(200);
+        responseSpecification = resBuilder.build();
+    }
+
+    @Test
+    public void deveCriarLogDosTestes() {
+        RequestSpecBuilder specBuilder = new RequestSpecBuilder();
+        specBuilder.log(LogDetail.ALL);
     }
 
     @Test
     public void deveVerificarCampoNome() {
         given()
+            .spec(requestSpecification)
         .when()
             .get(urlPath + "/3")
         .then()
+            .spec(responseSpecification)
             .statusCode(200)
             .rootPath(recurso)
             .body("name", is("Ana Julia"));
