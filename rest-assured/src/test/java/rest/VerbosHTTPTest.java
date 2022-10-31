@@ -1,6 +1,7 @@
 package rest;
 
 import classe.User;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -131,7 +132,7 @@ public class VerbosHTTPTest {
 //    }
 
     @Test
-    public void deveSalvarUsuarioUsandoMapObjeto() {
+    public void deveSalvarUsuarioUsandoObjeto() {
         User user = new User("Usuário via objeto", 20);
 
         given()
@@ -146,6 +147,27 @@ public class VerbosHTTPTest {
                 .body("id", is(notNullValue()))
                 .body("name", is("Usuário via objeto"))
                 .body("age", is(20));
+    }
+
+    @Test
+    public void deveSalvarUsuarioDesserializado() {
+        User user = new User("Usuário desserializado", 20);
+
+        User usuarioInserido = given()
+                .log().all()
+                .contentType("application/json")
+                .body(user)
+                .when()
+                .post(urlPath)
+                .then()
+                .log().all()
+                .statusCode(201)
+                .extract()
+                .body().as(User.class);
+
+        Assert.assertThat(usuarioInserido.getId(), notNullValue());
+        Assert.assertEquals("Usuario desserializado", usuarioInserido.getName());
+        Assert.assertThat(usuarioInserido.getAge(), is(20));
     }
 
     @Test
