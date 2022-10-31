@@ -1,6 +1,10 @@
 package rest;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 
 import static io.restassured.RestAssured.given;
@@ -8,8 +12,13 @@ import static org.hamcrest.Matchers.*;
 
 public class XmlTest {
 
-    String urlPath = "https://restapi.wcaquino.me/usersXML";
+    static String urlPath;
     String recurso = "user";
+
+    @Before
+    public void setUp() {
+        urlPath = "https://restapi.wcaquino.me/usersXML";
+    }
 
     @Test
     public void deveVerificarCampoNome() {
